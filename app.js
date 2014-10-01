@@ -81,7 +81,6 @@ app.use(function(req, res, next) {
     next(err);
 });
 app.use(errorHandler);
-
 function errorHandler(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
