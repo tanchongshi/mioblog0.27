@@ -1,0 +1,190 @@
+<% include head.html %>
+
+<body class="on blog single single-post postid-29 single-format-standard clearfix" id = "mioBlog">
+
+<% include header.html %>
+
+<!-- #site-container -->
+<div id="site-container" class="clearfix">
+
+    <!-- #primary -->
+    <section id="primary" class="sidebar-right clearfix">
+
+        <!-- #content -->
+        <div id="content" role="main">
+
+
+            <article id="post-29"
+                     class="post-29 post type-post status-publish format-standard has-post-thumbnail hentry category-category-trio tag-audio tag-gallery tag-post-formats tag-responsive tag-video tag-wordpress-2 has_thumb clearfix">
+
+
+                <!-- .hentry-box -->
+                <div class="hentry-box">
+                    <% if(blog.blogImage != "") { %>
+                    <figure class="entry-thumb">
+
+                        <img width="800" height="531"
+                             src="<%= blog.blogImage%>"
+                             class="attachment-post wp-post-image" alt=""/>
+
+                    </figure>
+                    <% } %>
+                    <div class="entry-wrap">
+
+
+                        <header class="entry-header">
+                            <h1 class="entry-title"><%-: blog.blogTitle%></h1>
+
+                            <div class="entry-meta"><span class="entry-meta-date"><time datetime="<%= blog.blogDate %>">
+                                <%-: blog.blogDate| truncate:16 %>
+                            </time></span></div>
+                        </header>
+
+                        <div class="entry-content clearfix">
+                            <%-: blog.blogContent%>
+                        </div>
+                        <div class="tags">
+                            标签: <a href="/categoryblog/<%=blog.blogCategory._id %>/" rel="tag"><%-:
+                            blog.blogCategory.categoryName%></a>
+                            点击数：<a href = "#"><%=blog.blogRead %></a>
+                            </div>
+
+                        <!-- /.hentry-wrap -->
+                    </div>
+
+                    <!-- /.hentry-box -->
+                </div>
+
+
+            </article>
+
+
+            <!--<div id="respond" class="comment-respond">-->
+            <!--<h3 id="reply-title" class="comment-reply-title">Leave A Comment?-->
+            <!--<small><a rel="nofollow" id="cancel-comment-reply-link" href="index.html#respond"-->
+            <!--style="display:none;">Click here to cancel reply.</a></small>-->
+            <!--</h3>-->
+            <!--<form action="http://demo.herothemes.com/scopic/wp-comments-post.php" method="post" id="commentform"-->
+            <!--class="comment-form">-->
+            <!--<p class="form-author clearfix req"><label for="author">Name <span class="required">*</span>-->
+            <!--</label> <input type="text" class="text-input" name="author" id="author" value="" size="40"/></p>-->
+
+            <!--<p class="form-email clearfix req"><label for="email">Email <span class="required">*</span> </label>-->
+            <!--<input type="text" class="text-input" name="email" id="email" value="" size="40"/></p>-->
+
+            <!--<p class="form-url clearfix"><label for="url">Website</label><input type="text" class="text-input"-->
+            <!--name="url" id="url" value=""-->
+            <!--size="40"/></p>-->
+
+            <!--<p class="form-textarea req clearfix"><label for="comment">Comment</label><textarea name="comment"-->
+            <!--id="comment"-->
+            <!--cols="60"-->
+            <!--rows="5"></textarea>-->
+            <!--</p>-->
+
+            <!--<p class="form-submit">-->
+            <!--<input name="submit" type="submit" id="submit" value="Post Comment"/>-->
+            <!--<input type='hidden' name='comment_post_ID' value='29' id='comment_post_ID'/>-->
+            <!--<input type='hidden' name='comment_parent' id='comment_parent' value='0'/>-->
+            <!--</p>-->
+
+            <!--<p style="display: none;"><input type="hidden" id="akismet_comment_nonce"-->
+            <!--name="akismet_comment_nonce" value="2cbc655568"/></p>-->
+            <!--<script type='text/javascript'-->
+            <!--src="/miofront/wp-content/plugins/akismet/_inc/formf940.js?ac34d5"></script>-->
+            <!--<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="134"/></p></form>-->
+            <!--</div>-->
+            <!-- #respond -->
+            <script type="text/javascript">
+                /*jQuery(document).ready(function () {
+                    jQuery('#commentform').submit(function () {
+                        _gaq.push(
+                                ['_setAccount', 'UA-587119-29'],
+                                ['_trackEvent', 'comment', 'submit']
+                        );
+                    });
+                });*/
+            </script>
+
+        </div>
+        <!-- #content -->
+
+
+        <!-- #sidebar -->
+        <aside id="sidebar" role="complementary">
+
+            <div id="ht-posts-widget-2" class="widget ht_posts_widget clearfix"><h4 class="widget-title">阅读排行</h4>
+                <ul class="clearfix" id = "articleTap">
+                </ul>
+
+            </div>
+            <!--<div id="categories-2" class="widget widget_categories clearfix"><h4 class="widget-title">Categories</h4>
+                <ul>
+                    <li class="cat-item cat-item-2"><a href="../category/category-duo/index.html"
+                                                       title="View all posts filed under Category Duo">Category Duo</a>
+                    </li>
+                    <li class="cat-item cat-item-3"><a href="../category/category-trio/index.html"
+                                                       title="View all posts filed under Category Trio">Category
+                        Trio</a>
+                    </li>
+                    <li class="cat-item cat-item-4"><a href="../category/category-uno/index.html"
+                                                       title="View all posts filed under Category Uno">Category Uno</a>
+                    </li>
+                    <li class="cat-item cat-item-1"><a href="../category/uncategorized/index.html"
+                                                       title="View all posts filed under Uncategorized">Uncategorized</a>
+                    </li>
+                </ul>
+            </div>-->
+        </aside>
+        <!-- /#sidebar -->
+
+
+    </section>
+    <!-- /#primary -->
+
+
+</div>
+<!-- /#site-container -->
+
+<% include footer.html %>
+
+<script>
+//右侧栏目点击数排行
+    jQuery(function ($) {
+        //博客栏目
+        $.ajax({
+            url: '/articleLeftTap',
+            type: 'get',
+            success: function (doc) {
+                var liBody = "";
+                $.each(doc.data, function (index) { 
+                    var thisData = doc.data[index];
+                    if(thisData.blogImage == ""){
+                        liBody += '<li class="clearfix has-thumb">' +
+                        '<div class="widget-entry-thumb no-thumb gallery">' +
+                            '<a href="/article/'+ thisData._id +'" rel="nofollow">' +
+                            '<i class="icon-file-text-alt"></i></a>' +
+                        '</div>' +
+                        '<a class="widget-entry-title" href="/article/'+ thisData._id +'" rel="bookmark" title="Gallery Post Format">'+ thisData.blogTitle +'</a> '+
+                    '</li>'                     
+                    }else {
+                        liBody += '<li class="clearfix has-thumb">' +
+                        '<div class="widget-entry-thumb">' +
+                            '<a href="/article/'+ thisData._id +'" rel="nofollow">' +
+                                '<img width="60" height="60"' +
+                                     'src="'+ thisData.blogImage +'"' +
+                                     'class="attachment-post-thumbnail wp-post-image"' +
+                                     'alt=""/> </a>' +
+                        '</div>' +
+                        '<a class="widget-entry-title" href="/article/'+ thisData._id +'" rel="bookmark" title="">'+ thisData.blogTitle +'</a>' +
+                    '</li>'                     
+                    }                                           
+                })
+                $('#articleTap').html($(liBody));       
+            }
+        });
+    })  
+</script>
+
+</body>
+</html>
