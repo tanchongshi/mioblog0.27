@@ -1,0 +1,28 @@
+<% include header.html %>
+<div class="container">
+    <legend>用户注册</legend>
+    <form class="form" method="post" action = "signup">
+
+        <div class="form-group">
+            <label>用户名</label>
+            <%- message %>
+            <div class="row">
+                <div class="col-xs-5 col-sm-4 col-md-3">
+                    <input type="text" class="form-control"  placeholder=".col-xs-4"  id="username" name="username">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>密码</label>
+            <div class="row">
+                <div class="col-xs-5 col-sm-4 col-md-3">
+                    <input type="password" class="form-control"  placeholder=".col-xs-4"  id="password" name="password">
+                </div>
+            </div>
+        </div>
+        <input type='hidden' name='_csrf' value='<%= csrf %>'/>
+        <button type="submit" class="btn btn-primary">注册</button>
+    </form>
+</div>
+<% include footer.html %>
