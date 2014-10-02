@@ -1,0 +1,6 @@
+# Ignore default 
+
+models/config.js
+node_modules/
+views/mioback/signin.html
+views/register.html
