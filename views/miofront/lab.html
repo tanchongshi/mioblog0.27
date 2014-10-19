@@ -1,13 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CocoScript Lab</title>
+
+    <!-- Bootstrap -->
+    <link href="/miofront/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/miofront/css/lab.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="icon" type="image/png" href="/miofront/images/me.png">
 </head>
-<body>
-<%for(i=0; i< lab.length; i++) {%>
-<div><%=lab[i].labContent%></div>
-<%}%>
-	
+
+<body id="body">
+    <div class="navbar navbar-fixed-top navbar-get" role="navigation" id="theheader">
+        <div class="container clearfix">
+
+            <a class="logo" href="/">
+                <img src="/miofront/images/me.png">
+                <span class="get">椰子脚本</span>
+            </a>
+            <span class="exp">你值得拥有</span>
+
+            <div class="navbar-collapse collapse pull-right">
+                <ul class="get-cate-nav">
+                    <li class=""><a href="/">主页</a>
+                    </li>
+                    <li class=""><a href="/aboutme">关于我</a>
+                    </li>
+                    <li class="submit "><a href="/#" target="_blank">实验室</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.navbar -->
+
+
+    <div class="container">
+
+        <div class="row row-offcanvas row-offcanvas-right">
+            <div class="col-xs-12 col-sm-9">
+                <ul class="get-artiles" id="galist">
+                    <%for(i=0; i< lab.length; i++) {%>
+                    <li>
+                        <!-- <div class="point">+5</div> -->
+                        <div class="avatar">
+                            <img src="/miofront/images/letterboxd-48-black.png" class="avatar" />
+                        </div>
+                        <div class="card">
+                            <h2><a href="/article/<%= lab[i]._id %>" target="_blank"><%=lab[i].blogTitle%></a>
+                            </h2>
+                            <div class="exp"><%=lab[i].blogCategory.categoryName%></div>
+                            <div class="action clearfix">
+                                <ul class="actions">
+                                    <li><%=lab[i].blogDate%></li>
+                                    <li class="tauthor"><a href="#" class="green">阅读次数&nbsp;<%=lab[i].blogRead%><span class="jdc-jobdeer jdcicon" title="jobdeer"></span></a>
+                                    </li>
+                                    <li><a href="/lab/detail/<%= lab[i]._id %>" target="_blank">查看效果</a>
+                                    </li>
+                                    <!-- <li><a href="javascript:add2kb('5985');" class="kblink-5985">+收藏</a> -->
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </li>
+                    <%}%>
+                    <ul class="pager pull-left">
+                            <% if(parseInt(option.pageNumber) != 1) { %>
+                            <li><a href="/lab/<%= parseInt(option.pageNumber)-1 %>">上一页</a></li>
+                            <% }
+                            if(option.totalPage != option.pageNumber) {
+                            %>
+                            <li><a href="/lab/<%= parseInt(option.pageNumber)+1 %>">下一页</a></li>
+                            <% } %>                                     
+                   </ul>
+                </ul>
+            </div><!--/span-->
+        </div><!--/row-->
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/javaScripts/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/miofront/bootstrap/js/bootstrap.min.js"></script>
 </body>
+
 </html>

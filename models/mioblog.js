@@ -515,15 +515,40 @@ BlogDAO.prototype.findByIdFront = function(id, callback) {
     });
 }
 
+/**
+ * 右侧阅读排行
+ * @date   2014-10-19
+ * @author Tam Chongshi
+ * @param  {Function} callback [description]
+ * @return {[type]}            [description]
+ */
 BlogDAO.prototype.findArticleTap = function(callback) {
 	Blog.find({}).sort({'blogRead':-1}).limit(5).exec(function(err,doc){
 		callback(err, doc);
 	})
 }
 
-BlogDAO.prototype.findLabByExist = function(callback) {
-    Blog.find({}).exists('labContent', true).exec(function(err ,doc) {
-        callback(err, doc);
+/**
+ * 分页查找lab
+ * @date   2014-10-19
+ * @author Tam Chongshi
+ * @param  {[type]}   option   [description]
+ * @param  {Function} callback [description]
+ * @return {[type]}            [description]
+ */
+BlogDAO.prototype.findLabByExist = function(option, callback) {
+    var skipFrom = (option.pageNumber * option.resultsPerPage) - option.resultsPerPage; //从第几页开始查询
+    Blog.find({}).populate('blogCategory', 'id, categoryName').sort({'_id':-1}).skip(skipFrom).limit(option.resultsPerPage).exists('labContent', true).exec(function(err ,limitObj) {
+        if (err) {
+            return callback(err);
+        };
+        Blog.find({}).exists('labContent', true).exec(function(err, allObj) { //查找出一共几页
+            if (err) {
+                return callback(err);
+            }
+            var pageCount = Math.ceil(allObj.length / option.resultsPerPage);
+            callback(err, pageCount, limitObj);
+        })
     })
 }
 

@@ -207,11 +207,17 @@ module.exports = function(app, __dirname){
     });	
 	
 	/** 写日记上传图片 **/
-	app.all('/nodejs/upload_json', Verify.authentication);
-	app.post('/nodejs/upload_json', function (req, res) {
+	app.all('/nodejs/upload_image_json', Verify.authentication);
+	app.post('/nodejs/upload_image_json', function (req, res, next) {
+
+		var url = './public/kindeditor-4.1.10/attached_image/';
+		upload(req, res, next ,url);
+		
+	})
+
+	function upload(req, res, next ,url) {
 	      var d = new Date();
-		  console.log(req);
-		  var dirPath = './public/kindeditor-4.1.10/attached/' + d.Format("yyyy-MM-dd") + "/";	 
+		  var dirPath = url + d.Format("yyyy-MM-dd") + "/";	 
 		  if (!fs.existsSync(dirPath)) {
 			fs.mkdirSync(dirPath);		  
 		  }		  
@@ -220,16 +226,20 @@ module.exports = function(app, __dirname){
 		  var target_path = dirPath+""+ d.getTime()+oName;
 		  // 使用同步方式重命名一个文件
 		  fs.renameSync(req.files.imgFile.path, target_path);
-		  var resPath = "/kindeditor-4.1.10/attached/"+ d.Format("yyyy-MM-dd") + "/"+ d.getTime()+oName;
-		  res.send({ "error": 0, "url": resPath });
-		
-	})
+		  var resPath = url.substring(url.lastIndexOf("kindeditor-4.1.10"))+ d.Format("yyyy-MM-dd") + "/"+ d.getTime()+oName;
+		  res.send({ "error": 0, "url": resPath });	
+	}
 	
 	/** 写日记kindeditor管理图片**/
-	app.all('/nodejs/manage_json', Verify.authentication);
-	app.get('/nodejs/manage_json', function(req, res, next) { //http://www.xuexb.com/html/134.html
+	app.all('/nodejs/manage_image_json', Verify.authentication);
+	app.get('/nodejs/manage_image_json', function(req, res, next) { //http://www.xuexb.com/html/134.html
+		var fileUrl = "./public/kindeditor-4.1.10/attached_image/";
+		managerFile(req, res, next, fileUrl);
+	})
+
+	function managerFile(req, res, next, fileUrl) {
 		if(req.query.path == "" || req.query.path=="Iloveyou"){
-			var path = "./public/kindeditor-4.1.10/attached/";
+			var path = fileUrl;
 			fs.readdir(path, function (err, files) {
 				mioFiles = files;
 				var fileList = [];//保存目录取的文件信息
@@ -276,11 +286,10 @@ module.exports = function(app, __dirname){
 					moveup_dir_path: ""
 				});					
 			})	
-		}
-				
-	})
+		}	
+	}
 
-	/** 写日记kindeditor删除图片**/
+	/** 写日记kindeditor删除图片或者文件**/
 	app.all('/nodejs/delete_json', Verify.authentication);	
 	app.post('/nodejs/delete_json', function(req, res) {
 	    var rUrl = req.body.url;
@@ -306,6 +315,57 @@ module.exports = function(app, __dirname){
 		});		
 				
 	});
+
+	/** kindeditor管理文件 **/
+	app.all('/nodejs/manage_file_json', Verify.authentication);
+	app.get('/nodejs/manage_file_json', function(req, res, next) { //http://www.xuexb.com/html/134.html
+		console.log("文件");
+		var fileUrl = "./public/kindeditor-4.1.10/attached_file/";
+		managerFile(req, res, next, fileUrl);
+	})	
+
+	/** 写日记上传文件 **/
+	app.all('/nodejs/upload_file_json', Verify.authentication);
+	app.post('/nodejs/upload_file_json', function (req, res, next) {
+		var url = './public/kindeditor-4.1.10/attached_file/';
+		upload(req, res, next ,url);
+		
+	})
+
+	/** 写日记读文件**/
+	app.all('/nodejs/read_file_json', Verify.authentication);
+	app.get('/nodejs/read_file_json', function (req, res, next) {
+
+		//获得路径
+		var url = './public'+ req.query.url;
+		fs.readFile(url,'utf-8',function(err,data){
+		    if(err){
+		        console.log("error");
+				return next(err);		        
+		    }else{
+		    	res.send({result: 'success', data: data});
+		    }
+		});		
+		
+	})
+
+	/** 写日记改文件**/
+	app.all('/nodejs/editor_file_json', Verify.authentication);
+	app.post('/nodejs/editor_file_json', function (req, res, next) {
+
+		//获得路径
+		var url = './public' + req.body.url;
+		console.log(url);
+		var fileAera = req.body.fileAera;
+		fs.writeFile(url, fileAera, function(err){  
+	        if(err)  
+	            res.send({result: 'error'});
+	        else  
+	           res.send({result: 'success'});
+	    });  
+		
+		
+	})	
 
 };
 

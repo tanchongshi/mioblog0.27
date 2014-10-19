@@ -51,6 +51,7 @@
 			display: block;		
 		}		
     </style>
+    <link rel="icon" type="image/png" href="/miofront/images/me.png">
 </head>
 <body>
 <!-- navbar -->
@@ -296,7 +297,7 @@
         <div class="row labedit" id = "labedit">
             <div class="col-md-12">
                 <div>
-                    <textarea name="labcontent" style="width:100%;height:300px;">
+                    <textarea name="labcontent" id = "labTextareaId" style="width:100%;height:300px;">
                         
                     </textarea>
                 </div>
@@ -339,12 +340,12 @@
                 cssPath : ['kindeditor-4.1.10/plugins/code/prettify.css'],
 //                themeType: 'simple',
                 allowImageUpload: true,
-				fileManagerJson : '/nodejs/manage_json',
+				//fileManagerJson : '/nodejs/manage_image_json',
                 allowFileManager : true,
-                uploadJson : '/nodejs/upload_json',
+                //uploadJson : '/nodejs/upload_json',
 //                allowFlashUpload: false,
 //                allowMediaUpload: false,
-//                allowFileUpload: true,
+                allowFileUpload: true,
                 items: [
                     'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
                     'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',

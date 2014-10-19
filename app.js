@@ -26,16 +26,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
 //app.set('view engine', 'ejs');
-app.use(express.favicon(path.join(__dirname, '/public/images/ozil.ico')));
+app.use(express.favicon(path.join(__dirname, '/public/images/me.ico')));
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 
-//保留上传文件的后缀名，并把上传目录设置为 /public/kindeditor-4.1.10/attached
+//保留上传文件的后缀名，并把临时上传目录设置为 /public/kindeditor-4.1.10/attached_file
 app.use(express.bodyParser({
     keepExtensions: true,
-    uploadDir: './public/kindeditor-4.1.10/attached/'
+    uploadDir: './public/kindeditor-4.1.10/attached_file/'
 }));
 app.use(express.cookieParser());
 //app.use(express.cookieSession({secret : 'cocoscript.com'}));

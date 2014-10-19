@@ -49,7 +49,7 @@ module.exports = function(app){
     var indexGet = function(req, res, next){
 
         var pageNumber = fiterNum(req); //过滤参数
-        var resultsPerPage=req.query.limit||5; //每页数据，默认2条
+        var resultsPerPage=req.query.limit||5; //每页数据，默认5条
         var option = {
             pageNumber: pageNumber,
             resultsPerPage: resultsPerPage
@@ -185,19 +185,24 @@ module.exports = function(app){
 
     //获得文章
     app.get('/article/:articleId', function(req, res, next) {
+        var result = "miofront/article"
+        getAticle(req, res, next, result);
+    })
 
+    function getAticle(req, res, next, result) {
         MioBlog.findByIdFront(req.params.articleId, function(err, doc) {
             if(!err) {
                 if(!doc) {
                     return next(err);
                 }else {
-                    res.render('miofront/article', {blog: doc})
+                    console.log(doc);
+                    res.render(result, {blog: doc})
                 }
             } else {
                 return next(err);
             }
         });
-    })
+    }    
 	
 	//文章右侧栏目获得栏目点击数排行
 	app.get('/articleLeftTap', function(req, res, next) {
@@ -211,14 +216,23 @@ module.exports = function(app){
 	})
 
     //实验室
-    app.get('/lab', function(req, res, next) {
-        MioBlog.findLabByExist(function(err, doc) {
+    app.get('/lab/:num', function(req, res, next) {
+
+        var pageNumber = fiterNum(req); //过滤参数
+        console.log(pageNumber);
+        var resultsPerPage=req.query.limit||10; //每页数据，默认5条
+        console.log(resultsPerPage);
+        var option = {
+            pageNumber: pageNumber,
+            resultsPerPage: resultsPerPage
+        }    
+        MioBlog.findLabByExist(option, function(err, totalPage, doc) {
             if(!err) {
-                console.log(doc);
                 if(doc == "") {
                     return next(err);
                 }else {
-                    res.render('miofront/lab', {lab: doc})
+                    option.totalPage = totalPage;
+                    res.render('miofront/lab', {lab: doc , option: option})
                 }
             } else {
                 return next(err);
@@ -230,5 +244,11 @@ module.exports = function(app){
     app.get('/aboutme', function(req, res){
         res.render('miofront/aboutme');
     })
+
+    //获得实验详情
+    app.get('/lab/detail/:articleId', function(req, res, next) {
+        var result = "miofront/labdetail"
+        getAticle(req, res, next, result);
+    })    
 
 }
