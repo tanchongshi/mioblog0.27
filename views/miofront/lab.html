@@ -52,7 +52,7 @@
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-9">
                 <ul class="get-artiles" id="galist">
-                    <%for(i=0; i< lab.length; i++) {%>
+                    <%for(i=0; i< lab.length; i++) { if(lab[i].labContent == '') {continue;}%>
                     <li>
                         <!-- <div class="point">+5</div> -->
                         <div class="avatar">

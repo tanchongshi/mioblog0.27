@@ -1,233 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detail Admin - Home</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- bootstrap -->
-    <link href="mioback/css/bootstrap/bootstrap.css" rel="stylesheet"/>
-    <link href="mioback/css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet"/>
-
-    <!-- global styles -->
-    <link rel="stylesheet" type="text/css" href="mioback/css/compiled/layout.css"/>
-    <link rel="stylesheet" type="text/css" href="mioback/css/compiled/elements.css"/>
-    <link rel="stylesheet" type="text/css" href="mioback/css/compiled/icons.css"/>
-
-    <!-- libraries -->
-    <link href="mioback/css/lib/font-awesome.css" type="text/css" rel="stylesheet"/>
-    <link href="mioback/css/lib/jquery.dataTables.css" type="text/css" rel="stylesheet" />
-
-    <!-- this page specific styles -->
-    <link rel="stylesheet" href="mioback/css/compiled/datatables.css" type="text/css" media="screen" />
-
-    <!-- open sans font -->
-    <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />-->
-
-    <!-- lato font -->
-    <!--<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css' />-->
-
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <style>
-        .hiddenTdId, .editCateName{
-            display: none;
-        }
-
-        .cateName{
-            cursor: crosshair;
-        }
-
-    </style>
-
-    <!-- tan -->
-    <link rel="stylesheet" href="manhuaTip/css/manhuaTip.1.0.css" type="text/css" media="screen" />
-    <link rel="icon" type="image/png" href="/miofront/images/me.png">
-</head>
-<body>
-<!-- navbar -->
-<header class="navbar navbar-inverse" role="banner">
-    <div class="navbar-header">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" id="menu-toggler">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/backindex">
-            <img src="mioback/img/logo.png" alt="logo"/>
-        </a>
-    </div>
-    <ul class="nav navbar-nav pull-right hidden-xs">
-        <li class="hidden-xs hidden-sm">
-            <input class="search" type="text"/>
-        </li>
-        <li class="notification-dropdown hidden-xs hidden-sm">
-            <a href="#" class="trigger">
-                <i class="icon-warning-sign"></i>
-                <span class="count">8</span>
-            </a>
-
-            <div class="pop-dialog">
-                <div class="pointer right">
-                    <div class="arrow"></div>
-                    <div class="arrow_border"></div>
-                </div>
-                <div class="body">
-                    <a href="#" class="close-icon"><i class="icon-remove-sign"></i></a>
-
-                    <div class="notifications">
-                        <h3>You have 6 new notifications</h3>
-                        <a href="#" class="item">
-                            <i class="icon-signin"></i> New user registration
-                            <span class="time"><i class="icon-time"></i> 13 min.</span>
-                        </a>
-                        <a href="#" class="item">
-                            <i class="icon-signin"></i> New user registration
-                            <span class="time"><i class="icon-time"></i> 18 min.</span>
-                        </a>
-                        <a href="#" class="item">
-                            <i class="icon-envelope-alt"></i> New message from Alejandra
-                            <span class="time"><i class="icon-time"></i> 28 min.</span>
-                        </a>
-                        <a href="#" class="item">
-                            <i class="icon-signin"></i> New user registration
-                            <span class="time"><i class="icon-time"></i> 49 min.</span>
-                        </a>
-                        <a href="#" class="item">
-                            <i class="icon-download-alt"></i> New order placed
-                            <span class="time"><i class="icon-time"></i> 1 day.</span>
-                        </a>
-
-                        <div class="footer">
-                            <a href="#" class="logout">View all notifications</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="notification-dropdown hidden-xs hidden-sm">
-            <a href="#" class="trigger">
-                <i class="icon-envelope"></i>
-            </a>
-
-            <div class="pop-dialog">
-                <div class="pointer right">
-                    <div class="arrow"></div>
-                    <div class="arrow_border"></div>
-                </div>
-                <div class="body">
-                    <a href="#" class="close-icon"><i class="icon-remove-sign"></i></a>
-
-                    <div class="messages">
-                        <a href="#" class="item">
-                            <img src="mioback/img/contact-img.png" class="display" alt="user"/>
-
-                            <div class="name">Alejandra Galván</div>
-                            <div class="msg">
-                                There are many variations of available, but the majority have suffered alterations.
-                            </div>
-                            <span class="time"><i class="icon-time"></i> 13 min.</span>
-                        </a>
-                        <a href="#" class="item">
-                            <img src="mioback/img/contact-img2.png" class="display" alt="user"/>
-
-                            <div class="name">Alejandra Galván</div>
-                            <div class="msg">
-                                There are many variations of available, have suffered alterations.
-                            </div>
-                            <span class="time"><i class="icon-time"></i> 26 min.</span>
-                        </a>
-                        <a href="#" class="item last">
-                            <img src="mioback/img/contact-img.png" class="display" alt="user"/>
-
-                            <div class="name">Alejandra Galván</div>
-                            <div class="msg">
-                                There are many variations of available, but the majority have suffered alterations.
-                            </div>
-                            <span class="time"><i class="icon-time"></i> 48 min.</span>
-                        </a>
-
-                        <div class="footer">
-                            <a href="#" class="logout">View all messages</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
-                我的账户
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a href="/logout">退出</a></li>
-                <li><a href="/" target="_blank">主页</a></li>
-            </ul>
-        </li>
-        <li class="settings hidden-xs hidden-sm">
-            <a href="#" role="button">
-                <i class="icon-cog"></i>
-            </a>
-        </li>
-        <li class="settings hidden-xs hidden-sm">
-            <a href="/logout" role="button">
-                <i class="icon-share-alt"></i>
-            </a>
-        </li>
-    </ul>
-</header>
-<!-- end navbar -->
-
-<!-- sidebar -->
-<div id="sidebar-nav">
-    <ul id="dashboard-menu">
-        <li>
-            <a href="/backindex">
-                <i class="icon-home"></i>
-                <span>Home</span>
-            </a>
-        </li>
-        <li>
-            <a href="chart-showcase.html">
-                <i class="icon-signal"></i>
-                <span>Charts</span>
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-toggle" href="#">
-                <i class="icon-group"></i>
-                <span>Users</span>
-                <i class="icon-chevron-down"></i>
-            </a>
-            <ul class="submenu">
-                <li><a href="user-list.html">User list</a></li>
-                <li><a href="new-user.html">New user form</a></li>
-                <li><a href="user-profile.html">User profile</a></li>
-            </ul>
-        </li>
-        <li class="active">
-            <a class="dropdown-toggle" href="#">
-                <div class="pointer">
-                    <div class="arrow"></div>
-                    <div class="arrow_border"></div>
-                </div>
-                <i class="icon-edit"></i>
-                <span>blog</span>
-                <i class="icon-chevron-down"></i>
-            </a>
-            <ul class="active submenu">
-                <li><a href="/writeblog" >写日记</a></li>
-                <li><a href="/manageblog" >管理日记</a></li>
-                <li><a href="/manageblog" class="active">管理组别</a></li>
-            </ul>
-        </li>
-    </ul>
-</div>
-<!-- end sidebar -->
-
+<% include header.html %>
 
 <!-- main container -->
 <div class="content">
@@ -318,12 +89,8 @@
 
 
 <!-- scripts -->
-<script src="mioback/js/jquery-latest.js"></script>
-<!--<script src="javascripts/jquery-1.9.1.min.js"></script>-->
-<script src="mioback/js/bootstrap.min.js"></script>
+<% include footer.html %>
 <script src="mioback/js/jquery.dataTables.js"></script>
-<script src="mioback/js/theme.js"></script>
-
 <!-- tan -->
 <script src="manhuaTip/js/manhuaTip.1.0.js"></script>
 
@@ -400,6 +167,16 @@
         $(".manhuaTip").manhuaTip({
             timeOut : 1000//停留时间
         });
+
+         //设置nav active
+        var $lastChild = $("#dashboard-menu>li:last-child");
+        $lastChild.addClass('active');
+        $("#blogNav").addClass('active').find('li:last-child a').addClass('active');
+        // border
+        $('<div class="pointer">'+
+          '<div class="arrow"></div>'+
+          '<div class="arrow_border"></div>'+
+          '</div>').appendTo($lastChild);                       
 
     });
 

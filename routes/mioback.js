@@ -6,6 +6,8 @@ var fs = require('fs');
 
 var MioBlog = require('./../models/mioblog.js');
 
+var MioFile = require('./../models/miofile.js');
+
 /**
  * 获得用户登陆验证
  * @type {[type]}
@@ -54,7 +56,9 @@ module.exports = function(app, __dirname){
         //如果是实验
 		if(req.body.labradio == "1") {
 			article.labContent = req.body.labcontent;
-		}         
+		}else {
+			article.labContent = '';
+		}        
 
 		var blogCategory = req.body.blogCategory;
 		
@@ -118,10 +122,20 @@ module.exports = function(app, __dirname){
 
     /**编辑日记**/
     app.all('/miobackeditorblogbyId', Verify.authentication);
+ 	app.all('/mioBackBeforeEidtCatery', Verify.authentication);
+ 	app.get('/mioBackBeforeEidtCatery', function(req, res){
+         MioBlog.findAllInCategory(function(err, obj, next) {
+            if (err) {
+                return next(err);
+            }
+            res.send({sortObj: obj});
+        });	
+ 	})   
 	//加入编辑状态
     app.get('/miobackeditorblogbyId',function(req, res){
         MioBlog.findById(req.query.id, function(err, doc) {
             if(!err) {
+            	console.log(doc);
                 res.render('mioback/editorblog', {blogObj: doc});
             } else {
                 res.render('error', {error: '编辑日记查询日记失败'});
@@ -129,28 +143,67 @@ module.exports = function(app, __dirname){
         });
 
     });	
-	//保存提交的编辑
-    app.post('/miobackeditorblogbyId',function(req, res){
+	//保存提交的编辑 ,第一次编辑标题和内容
+    app.post('/miobackeditorblogbyId',function(req, res ,next){
+
         var blog={
             _id: req.body.blogId,
             blogTitle: req.body.blogTitle,
-            blogContent: req.body.blogContent
+            blogContent: req.body.blogContent,
+            blogImage: req.body.blogImage
         }
-        if(blog != null){
+        //如果是实验
+		if(req.body.labradio == "1") {
+			blog.labContent = req.body.labcontent;
+		} else {
+			blog.labContent = '';
+		} 
+		if(req.body.blogOldCategory != req.body.blogCategory) {
+			blog.blogCategory = req.body.blogCategory;
+			blog.blogOldCategory = req.body.blogOldCategory;
+		}else {
+			blog.blogCategory = "";
+		}
+		/*if(req.body.blogOldCategory != req.body.blogCategory) {
+	        MioBlog.findByNameInCategory(req.body.blogCategory, function(err, obj) {
+	            if(err) {
+					return next(err);
+	            }else {
+	            	if(obj != null) {
+	            		blog.blogNum = obj.categoryNum;
+	            		blog.blogCategory = obj._id;
+	            		console.log(blog.blogCategory);
+				        if(blog != null){
 
-            MioBlog.findByIdAndUpdate(blog, function(err ,doc){
-                if(err) {
-                    res.send({'success':false,'err':err});
-                } else {
-                    res.send({'success':true});
-                }
-            });
+				            MioBlog.findByIdAndUpdate(blog, category, function(err ,doc){
+				                if(err) {
+				                    res.send({'success':false,'err':err});
+				                } else {
+				                    res.send({'success':true});
+				                }
+				            });
 
-           // req.session.error='保存成功';
+				           // req.session.error='保存成功';
 
-        }else {
-            res.send({'success':false});
-        }
+				        }else {
+				            res.send({'success':false});
+				        }	            		
+	            	}
+	            }
+
+	        })
+
+		}*/ 
+
+        MioBlog.findByIdAndUpdate(blog, function(err, doc){
+            if(err) {
+                res.send({'success':false,'err':err});
+            } else {
+                res.send({'success':true});
+            }
+        });			
+      
+
 
     });
 	
@@ -210,12 +263,15 @@ module.exports = function(app, __dirname){
 	app.all('/nodejs/upload_image_json', Verify.authentication);
 	app.post('/nodejs/upload_image_json', function (req, res, next) {
 
-		var url = './public/kindeditor-4.1.10/attached_image/';
-		upload(req, res, next ,url);
+		var url = './public/lovecoding/attached_image/';
+		var fileType = 'image';
+		upload(req, res, next ,url, fileType);
 		
 	})
 
-	function upload(req, res, next ,url) {
+	function upload(req, res, next ,url, fileType) {
+		  //console.log(res.req.headers);
+		  //console.log(req.files.imgFile.originalFilename);
 	      var d = new Date();
 		  var dirPath = url + d.Format("yyyy-MM-dd") + "/";	 
 		  if (!fs.existsSync(dirPath)) {
@@ -223,17 +279,30 @@ module.exports = function(app, __dirname){
 		  }		  
 		  var oName = req.files.imgFile.originalFilename;
 		  oName = oName.substr(oName.lastIndexOf("."));
-		  var target_path = dirPath+""+ d.getTime()+oName;
+		  var nameTime = d.getTime()+oName;
+		  var target_path = dirPath+""+ nameTime;
 		  // 使用同步方式重命名一个文件
 		  fs.renameSync(req.files.imgFile.path, target_path);
-		  var resPath = url.substring(url.lastIndexOf("kindeditor-4.1.10"))+ d.Format("yyyy-MM-dd") + "/"+ d.getTime()+oName;
-		  res.send({ "error": 0, "url": resPath });	
+		  //上传图片成功后，记录到数据库
+		  var fileData = {
+		  	autoName: nameTime,
+		  	realName: req.files.imgFile.originalFilename,
+		  	path: target_path,
+		  	fileType: fileType,
+		  	blogDate: new Date().Format("yyyy-MM-dd hh:mm:ss")
+		  }
+		  MioFile.save(fileData, function(err) {
+		  	if(err) return next(err);
+			  var resPath = url.substring(url.lastIndexOf("lovecoding"))+ d.Format("yyyy-MM-dd") + "/"+ d.getTime()+oName;
+			  res.send({ "error": 0, "url": '/' + resPath });		  	
+		  });
+	
 	}
 	
 	/** 写日记kindeditor管理图片**/
 	app.all('/nodejs/manage_image_json', Verify.authentication);
 	app.get('/nodejs/manage_image_json', function(req, res, next) { //http://www.xuexb.com/html/134.html
-		var fileUrl = "./public/kindeditor-4.1.10/attached_image/";
+		var fileUrl = "./public/lovecoding/attached_image/";
 		managerFile(req, res, next, fileUrl);
 	})
 
@@ -293,22 +362,42 @@ module.exports = function(app, __dirname){
 	app.all('/nodejs/delete_json', Verify.authentication);	
 	app.post('/nodejs/delete_json', function(req, res) {
 	    var rUrl = req.body.url;
+	    var fileId = req.body.fileId;
 		fs.unlink('./public'+rUrl, function (err) {
 		  if (err) {
 			res.send({result: 0}); //图片删除失败
 		  } else {
 			var thisUrl = './public' + rUrl.substr(0, rUrl.lastIndexOf("/"));
-			fs.readdir(thisUrl, function (err, files) {				
+			fs.readdir(thisUrl, function (err, files) { //删除文件夹
+				console.log(files);
 				if(files.length == 0) {
+
 					fs.rmdir(thisUrl, function (err) {
 					  if (err) {
 						res.send({result: 2}); //文件夹删除失败
 					  }else {
-						res.send({result: 1});
+					  	MioFile.deleteFile(fileId, function(err) {
+					  		if(err) {
+					  			res.send({result: 3}); //数据库文件删除失败
+					  		} else {
+
+					  			res.send({result: 1});
+					  		}
+					  		
+					  	})
+						
 					  }				  
 					});
+					
 				}else {
-					res.send({result: 1});
+				  	MioFile.deleteFile(fileId, function(err) {
+				  		if(err) {
+				  			res.send({result: 3}); //数据库文件删除失败
+				  		} else{
+				  			res.send({result: 1});
+				  		}
+				  		
+				  	})
 				}
 			})			
 		  }		  
@@ -320,15 +409,16 @@ module.exports = function(app, __dirname){
 	app.all('/nodejs/manage_file_json', Verify.authentication);
 	app.get('/nodejs/manage_file_json', function(req, res, next) { //http://www.xuexb.com/html/134.html
 		console.log("文件");
-		var fileUrl = "./public/kindeditor-4.1.10/attached_file/";
+		var fileUrl = "./public/lovecoding/attached_file/";
 		managerFile(req, res, next, fileUrl);
 	})	
 
 	/** 写日记上传文件 **/
 	app.all('/nodejs/upload_file_json', Verify.authentication);
 	app.post('/nodejs/upload_file_json', function (req, res, next) {
-		var url = './public/kindeditor-4.1.10/attached_file/';
-		upload(req, res, next ,url);
+		var url = './public/lovecoding/attached_file/';
+		var fileType = 'file';
+		upload(req, res, next ,url, fileType);
 		
 	})
 
@@ -366,6 +456,24 @@ module.exports = function(app, __dirname){
 		
 		
 	})	
+
+    /** 后台文件管理页面jquery table通过ajax获得数据 **/
+    app.all('/miobackgetfile', Verify.authentication);
+    app.get('/miobackgetfile',function(req, res){
+        MioFile.findAllFiles(function(err, obj){
+            var tempObj = {
+                "aaData": obj
+            }
+            res.send(tempObj);
+        });
+
+    });
+
+    /** 管理文件页面 **/
+    app.all('/managefile', Verify.authentication);
+    app.get('/managefile',function(req, res) {
+        res.render('mioback/managefile');
+    });	   
 
 };
 

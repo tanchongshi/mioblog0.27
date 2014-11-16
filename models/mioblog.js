@@ -183,63 +183,130 @@ BlogDAO.prototype.push = function(obj, callback) {
 BlogDAO.prototype.findByIdAndUpdate = function(obj, callback){
     var _id=obj._id;
     delete obj._id;
-//    Blog.findOneAndUpdate(_id, obj, function(err,obj){
-//        callback(err, obj);
-//    });
-    Blog.findById(_id, function(err, doc) {
-		if (err) callback(err);
-		
-        function docSave(doc) {
-            doc.blogTitle = obj.blogTitle;
-            doc.blogContent = obj.blogContent;
-            doc.save(function(err, bObj) {
-                callback(err, bObj);
-            })
-        }
-        if(doc.blogTitle == obj.blogTitle) { //如果栏目标题没有改变
-            docSave(doc);
-        }else { //如果栏目标题改变了
-            var nId = doc.blogContext.next.id;
-            var pId = doc.blogContext.previous.id;
-            if(nId != null && pId != null) { //如果该文章前面和后面文章存在
-                Blog.findById(pId, function(err, pd1) {
-                    if (err) callback(err);
-                    Blog.findById(nId, function(err, nd1) {
+
+    if(obj.blogCategory != "") {
+        Category.findOne({categoryName:obj.blogCategory}, function(err, catogryObj){
+            if(err) {
+                callback(err);
+                return;
+            }else {
+                
+                Category.findOne({categoryName:obj.blogOldCategory}, function(err, catogryOldObj){
+                    if(err) {
+                        callback(err);
+                        return;
+                    }else {  
+                        obj.blogNum = catogryObj.categoryNum;
+                        obj.blogCategory = catogryObj._id;
+                        console.log(obj.blogOldCategory);
+                        console.log(catogryOldObj);
+                        eiditorSave(catogryObj, catogryOldObj);                    
+                    }         
+                })
+
+            }
+        });    
+    }else {
+        obj.blogNum = ""
+        obj.blogCategory = ""; 
+        var catogryObj = ""
+        var catogryOldObj = ""
+        eiditorSave(catogryObj, catogryOldObj);
+    }
+   
+
+    function eiditorSave(catogryObj, catogryOldObj) { 
+        Blog.findById(_id, function(err, doc) {
+    		if (err) callback(err);
+    		
+            function docSave(doc) {
+                doc.blogTitle = obj.blogTitle;
+                doc.blogContent = obj.blogContent;
+                doc.blogImage = obj.blogImage;
+                if(obj.labContent == '') {
+                    doc.labContent = '';
+                }else {
+                    doc.labContent = obj.labContent;
+                }
+
+                if(obj.blogNum != '') {
+                    doc.blogNum = obj.blogNum;
+                }
+                if(obj.blogCategory != '') {
+                    doc.blogCategory = obj.blogCategory;
+                    if(catogryOldObj.article.length == 1){ //如果只剩最后一篇了 删除栏目
+                        catogryOldObj.remove();
+                    } else {
+                        catogryOldObj.article.pull({_id: doc._id});
+                    }                    
+                    
+                    catogryOldObj.save(function(err) {
+                        if(err) {
+                            callback(err);
+                        } else {
+                            catogryObj.article.push(doc);
+                            catogryObj.save(function(err) {
+                                if(err) {
+                                    callback(err);
+                                } else {
+                                    doc.save(function(err, bObj) {
+                                        callback(err, bObj);
+                                    })
+                                }
+                            });
+                        }
+                    });               
+                }else {
+                    doc.save(function(err, bObj) {
+                        callback(err, bObj);
+                    })
+                }   
+            }
+            if(doc.blogTitle == obj.blogTitle) { //如果栏目标题没有改变
+                docSave(doc);
+            }else { //如果栏目标题改变了
+                var nId = doc.blogContext.next.id;
+                var pId = doc.blogContext.previous.id;
+                if(nId != null && pId != null) { //如果该文章前面和后面文章存在
+                    Blog.findById(pId, function(err, pd1) {
                         if (err) callback(err);
-                        pd1.blogContext.next.name = obj.blogTitle;
-                        pd1.save(function(err) {
+                        Blog.findById(nId, function(err, nd1) {
                             if (err) callback(err);
-                            nd1.blogContext.previous.name = obj.blogTitle;
-                            nd1.save(function(err) {
+                            pd1.blogContext.next.name = obj.blogTitle;
+                            pd1.save(function(err) {
                                 if (err) callback(err);
-                                docSave(doc);
+                                nd1.blogContext.previous.name = obj.blogTitle;
+                                nd1.save(function(err) {
+                                    if (err) callback(err);
+                                    docSave(doc);
+                                })
                             })
                         })
                     })
-                })
-            }else if(nId != null && pId == null) { //如果前面一篇为空，后面一篇存在
-                Blog.findById(nId, function(err, bDoc) {
-                    if (err) callback(err);
-                    bDoc.blogContext.previous.name = obj.blogTitle;
-                    bDoc.save(function(err) {
+                }else if(nId != null && pId == null) { //如果前面一篇为空，后面一篇存在
+                    Blog.findById(nId, function(err, bDoc) {
                         if (err) callback(err);
-                        docSave(doc);
+                        bDoc.blogContext.previous.name = obj.blogTitle;
+                        bDoc.save(function(err) {
+                            if (err) callback(err);
+                            docSave(doc);
+                        })
                     })
-                })
-            }else if(nId == null && pId != null) { //如果后面一篇为空，前面一篇存在
-                Blog.findById(pId, function(err, bDoc) {
-                    if (err) callback(err);
-                    bDoc.blogContext.next.name = obj.blogTitle;
-                    bDoc.save(function(err) {
+                }else if(nId == null && pId != null) { //如果后面一篇为空，前面一篇存在
+                    Blog.findById(pId, function(err, bDoc) {
                         if (err) callback(err);
-                        docSave(doc);
+                        bDoc.blogContext.next.name = obj.blogTitle;
+                        bDoc.save(function(err) {
+                            if (err) callback(err);
+                            docSave(doc);
+                        })
                     })
-                })
-            }else if(nId == null && pId == null) {
-                docSave(doc);
+                }else if(nId == null && pId == null) {
+                    docSave(doc);
+                }
             }
-        }
-    })
+        })
+    }
 }
 
 

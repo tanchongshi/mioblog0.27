@@ -32,10 +32,10 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 
-//保留上传文件的后缀名，并把临时上传目录设置为 /public/kindeditor-4.1.10/attached_file
+//保留上传文件的后缀名，并把临时上传目录设置为 /public/lovecoding/attached_file
 app.use(express.bodyParser({
     keepExtensions: true,
-    uploadDir: './public/kindeditor-4.1.10/attached_file/'
+    uploadDir: './public/lovecoding/attached_file/'
 }));
 app.use(express.cookieParser());
 //app.use(express.cookieSession({secret : 'cocoscript.com'}));
