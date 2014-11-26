@@ -10,6 +10,7 @@ var http = require('http');
 var path = require('path');
 var ejs = require('ejs');
 var config = require('./models/config');
+var RedisDao = require('./models/redis');
 
 var SessionStore = require("session-mongoose")(express);
 var store = new SessionStore({
@@ -47,6 +48,7 @@ app.use(express.session({
     } // expire session in 15 min or 900 seconds
 }));
 
+
 //登陆页面不用csrf
 app.use(function(req, res, next) {
     if (req.originalUrl == config.dl && req.originalMethod == "POST") {
@@ -66,8 +68,16 @@ app.use(function(req, res, next) {
     if (err) res.locals.message = '<div class="alert alert-danger">' + err + '</div>';
     next();
 });
+
+//记录用户信息
+app.use(function(req, res, next){
+    RedisDao.visitSave(req, res, next);
+})
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 //路由器传app进去
 //routes(app)最佳
 user(app);

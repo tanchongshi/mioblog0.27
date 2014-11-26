@@ -9,7 +9,7 @@
  * @type {[type]}
  */
 var MioUser = require('./../models/miouser.js');
-
+var RedisDao = require('./../models/redis');
 /**
  * 获得用户登陆验证
  * @type {[type]}
@@ -27,8 +27,34 @@ module.exports = function(app) {
     app.get(config.bi, Verify.authentication);
 
     /** 后台主页 */
-    app.get(config.bi, function(req, res) {
-        res.render('mioback/index');
+    app.get(config.bi, function(req, res, next) {
+
+        RedisDao.getVisitInfo(24 * 60 * 60 * 1000, function(err, users) { //获得一天访问数
+            if (err) {
+                return next (err);
+            }
+            req.onlineDay = users; 
+            RedisDao.getVisitInfo(7 * 24 * 60 * 60 * 1000, function(err, users) { //获得一周访问数
+                if (err) {
+                    return next (err);
+                }
+                req.onlineWeek = users; 
+                RedisDao.getVisitInfo(30 * 24 * 60 * 60 * 1000, function(err, users) { //获得30天访问数
+                    if (err) {
+                        return next (err);
+                    }
+                    req.onlinMonth = users; 
+                    RedisDao.getVisitInfo(365 * 24 * 60 * 60 * 1000, function(err, users) { //获得一年访问数
+                        if (err) {
+                            return next (err);
+                        }
+                        req.onlineYear = users; 
+                        res.render('mioback/index', {visitDay: req.onlineDay, visitWeek: req.onlineWeek, visitMonth: req.onlinMonth, visitYear: req.onlineYear});
+
+                    });              
+                });              
+            });              
+        });
     })
 
     /** 验证登陆状态 **/

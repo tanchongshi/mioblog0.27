@@ -251,4 +251,7 @@ module.exports = function(app){
         getAticle(req, res, next, result);
     })    
 
+    app.get('/nihao', function(req, res) {
+        res.send(req.online.length + ' users online');   
+    })
 }

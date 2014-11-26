@@ -8,6 +8,8 @@ var MioBlog = require('./../models/mioblog.js');
 
 var MioFile = require('./../models/miofile.js');
 
+var RedisDao = require('./../models/redis');
+
 /**
  * 获得用户登陆验证
  * @type {[type]}
@@ -473,7 +475,32 @@ module.exports = function(app, __dirname){
     app.all('/managefile', Verify.authentication);
     app.get('/managefile',function(req, res) {
         res.render('mioback/managefile');
-    });	   
+    });	 
+
+    /** 后台首页统计访问jquery table通过ajax获得数据 **/
+    app.all('/indexVistaDetail', Verify.authentication);
+    app.get('/indexVistaDetail',function(req, res){
+
+        RedisDao.getVisitInfo(24 * 60 * 60 * 1000, function(err, users) {
+            if (err) {
+                return next (err);
+            }
+    		var arr = [];
+    		for(var i in users){
+    			arr.push(JSON.parse(users[i]));
+    		}
+            res.send({"aaData":  arr});  
+
+        });
+
+		/*for(var i in temVal) {
+			var index = temVal[i].lastIndexOf('mioip:');
+			var info = temVal[i].substring(0, index);
+			var ip = temVal[i].substring(index+6);
+			arr.push({visitInfo: info, ip: ip, all: temVal[i]})
+		}*/ 		
+
+    });      
 
 };
 
