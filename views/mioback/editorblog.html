@@ -55,14 +55,14 @@
                 </div>    
                  <div class="col-md-8 column miolabradio">
                     <div class="field-box clearfix">
-                        <p><input id = "labradioId1" type="radio" value="0" name="labradio" <% if(blogObj.labContent == ''){ %><%= 'checked'%><%}%>>非实验</p> 
-                        <p><input id = "labradioId2" type="radio" value="1" name="labradio" <% if(blogObj.labContent != ''){ %><%= 'checked'%><%}%>>实验</p> 
+                        <p><input id = "labradioId1" type="radio" value="0" name="labradio" <% if(blogObj.labStatus == 0){ %><%= 'checked'%><%}%>>非实验</p> 
+                        <p><input id = "labradioId2" type="radio" value="1" name="labradio" <% if(blogObj.labStatus == 1){ %><%= 'checked'%><%}%>>实验</p> 
                     </div>
                 </div> 
 
             </div>
 
-        <div class="row labedit <% if(blogObj.labContent != ''){ %><%= 'on'%><%}%>" id = "labedit">
+        <div class="row labedit <% if(blogObj.labStatus == 1){ %><%= 'on'%><%}%>" id = "labedit">
             <div class="col-md-12">
                 <div>
                     <textarea name="labcontent" id = "labTextareaId" style="width:100%;height:300px;">

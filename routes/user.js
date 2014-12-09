@@ -49,7 +49,12 @@ module.exports = function(app) {
                             return next (err);
                         }
                         req.onlineYear = users; 
-                        res.render('mioback/index', {visitDay: req.onlineDay, visitWeek: req.onlineWeek, visitMonth: req.onlinMonth, visitYear: req.onlineYear});
+                        res.render('mioback/index', {
+                            visitDay: req.onlineDay, visitWeek: req.onlineWeek, 
+                            visitMonth: req.onlinMonth, visitYear: req.onlineYear,
+                            refererDay: req.refererDay, refererWeek: req.refererWeek,
+                            refererMonth: req.refererMonth, refererYear: req.refererYear
+                        });
 
                     });              
                 });              

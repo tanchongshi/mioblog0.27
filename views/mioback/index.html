@@ -63,7 +63,39 @@
             <span class="date"><%=year %>年</span>
         </div>
     </div>
+    
+    <div class="row stats-row">
+        <div class="col-md-3 col-sm-3 stat">
+            <div class="data">
+                <span class="number"><%=refererDay.length %></span>
+                一天内访问的用户
+            </div>
+            <span class="date"><%=date%>号</span>
+        </div>
+        <div class="col-md-3 col-sm-3 stat">
+            <div class="data">
+                <span class="number"><%=refererWeek.length %></span>
+                一周内访问的用户
+            </div>          
+            <span class="date"><%=dateweek %></span>
+        </div>
+        <div class="col-md-3 col-sm-3 stat">
+            <div class="data">
+                <span class="number"><%=refererMonth.length %></span>
+                一个月内的访问数
+            </div>
+            <span class="date"><%=month%>月</span>
+        </div>
+        <div class="col-md-3 col-sm-3 stat last">
+            <div class="data">
+                <span class="number"><%=refererYear.length %></span>
+                一年内的访问数
+            </div>
+            <span class="date"><%=year %>年</span>
+        </div>
+    </div>
 </div>
+
 <!-- end upper main stats -->
 <div class="visitDetail" style = "padding:45px;">
     <div class="row">
@@ -111,17 +143,28 @@
           '<div class="arrow"></div>'+
           '<div class="arrow_border"></div>'+
           '</div>').appendTo($firstChild);
-
-        $('#managecate').dataTable({ 
+        var val = 1;
+        var dataTableObj = $('#managecate').dataTable({ 
             "sPaginationType": "full_numbers",
             "bProcessing": true,
-            "sAjaxSource": '/indexVistaDetail',
+            "sAjaxSource": '/indexVistaDetail?visitType=1',
             "aoColumns": [
                 { "mData": "userAgent"},
                 { "mData": "date"},
                 { "mData": "ip"},
                 { "mData": "cookie"}
             ]
+        });
+
+        $('.stat').each(function(index, val) {
+             $(this).css('cursor','pointer');
+             $(this).data('name',index + 1)
+             $(this).click(function(event) {
+                    console.log(dataTableObj);
+                    dataTableObj.fnSettings().sAjaxSource='/indexVistaDetail?visitType=' + $(this).data('name');
+                    dataTableObj._fnAjaxUpdate()
+                   
+             });
         });         
 
     })

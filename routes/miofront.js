@@ -49,7 +49,7 @@ module.exports = function(app){
     var indexGet = function(req, res, next){
 
         var pageNumber = fiterNum(req); //过滤参数
-        var resultsPerPage=req.query.limit||5; //每页数据，默认5条
+        var resultsPerPage=req.query.limit||10; //每页数据，默认5条
         var option = {
             pageNumber: pageNumber,
             resultsPerPage: resultsPerPage
@@ -66,7 +66,7 @@ module.exports = function(app){
             }
             option.totalPage = totalPage;
             var category = coutCategoryNum(obj);
-            res.render('miofront/index', { doc: obj, option: option, category: category});
+            res.render('miofront/index', { doc: obj, option: option, category: category, mioTitle: '', mioNavTitle: ''});
         });
 
     }
@@ -74,7 +74,7 @@ module.exports = function(app){
     var indexPost = function(req, res, next){
 
         var pageNumber = fiterNum(req); //过滤参数
-        var resultsPerPage=req.query.limit||5; //每页数据，默认2条
+        var resultsPerPage=req.query.limit||10; //每页数据，默认2条
         var option = {
             pageNumber: pageNumber,
             resultsPerPage: resultsPerPage
@@ -116,7 +116,7 @@ module.exports = function(app){
         var pageNumber = fiterNum(req); //过滤参数
         var categoryId = req.params.categoryId;
         var idObj = {_id: categoryId}; // 所查的栏目
-        var resultsPerPage = req.query.limit||5; //每页数据，默认2条
+        var resultsPerPage = req.query.limit||10; //每页数据，默认2条
         var option = {
             idObj: idObj,
             pageNumber: pageNumber,
@@ -131,7 +131,7 @@ module.exports = function(app){
                 return next();
             }
             option.totalPage = totalPage;
-            res.render('miofront/category', {doc: doc, option: option});
+            res.render('miofront/category', {doc: doc, option: option, mioTitle: '', mioNavTitle: doc.categoryName});
         })
 
     }
@@ -141,7 +141,7 @@ module.exports = function(app){
         var pageNumber = fiterNum(req); //过滤参数
         var categoryId = req.params.categoryId;
         var idObj = {_id: categoryId}; // 所查的栏目
-        var resultsPerPage = req.query.limit||5; //每页数据，默认2条
+        var resultsPerPage = req.query.limit||10; //每页数据，默认2条
         var option = {
             idObj: idObj,
             pageNumber: pageNumber,
@@ -196,7 +196,7 @@ module.exports = function(app){
                     return next(err);
                 }else {
                     console.log(doc);
-                    res.render(result, {blog: doc})
+                    res.render(result, {blog: doc, mioTitle: doc.blogTitle + ' - ', mioNavTitle: ''})
                 }
             } else {
                 return next(err);
@@ -219,9 +219,7 @@ module.exports = function(app){
     app.get('/lab/:num', function(req, res, next) {
 
         var pageNumber = fiterNum(req); //过滤参数
-        console.log(pageNumber);
-        var resultsPerPage=req.query.limit||10; //每页数据，默认5条
-        console.log(resultsPerPage);
+        var resultsPerPage=req.query.limit||2; //每页数据，默认5条
         var option = {
             pageNumber: pageNumber,
             resultsPerPage: resultsPerPage

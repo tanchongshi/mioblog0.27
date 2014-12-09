@@ -73,6 +73,58 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next){
     RedisDao.visitSave(req, res, next);
 })
+
+//记录用户访问页面
+app.use(function(req, res, next){
+    RedisDao.visitRefererSave(req, res, next);
+})
+
+//获得一天访问页面
+app.use(function(req, res, next){
+    if(req.path == config.bi) {
+        RedisDao.getDayReferer(req, res, next, function(err) {
+            next(err);
+        });
+    } else {
+        next();
+    }
+    
+})
+
+//获得一周访问页面
+app.use(function(req, res, next){
+    if(req.path == config.bi){
+        RedisDao.getWeekReferer(req, res, next, function(err) {
+            next(err);
+        });
+    } else {
+        next();
+    }
+    
+})
+
+//获得一月访问页面
+app.use(function(req, res, next){
+    if(req.path == config.bi) {
+        RedisDao.getMonthReferer(req, res, next, function(err) {
+            next(err);
+        });
+    } else {
+        next();
+    }
+})
+
+//获得一年访问页面
+app.use(function(req, res, next){
+    if(req.path == config.bi) {
+        RedisDao.getYearReferer(req, res, next, function(err) {
+            next(err);
+        });
+    } else {
+        next();
+    }
+})
+
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 

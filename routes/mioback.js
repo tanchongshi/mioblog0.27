@@ -58,8 +58,10 @@ module.exports = function(app, __dirname){
         //如果是实验
 		if(req.body.labradio == "1") {
 			article.labContent = req.body.labcontent;
+			article.labStatus = 1;
 		}else {
-			article.labContent = '';
+			article.labContent = req.body.labcontent;
+			article.labStatus = 0;
 		}        
 
 		var blogCategory = req.body.blogCategory;
@@ -155,10 +157,13 @@ module.exports = function(app, __dirname){
             blogImage: req.body.blogImage
         }
         //如果是实验
+        console.log(req.body.labradio);
 		if(req.body.labradio == "1") {
 			blog.labContent = req.body.labcontent;
+			blog.labStatus = 1;
 		} else {
-			blog.labContent = '';
+			blog.labContent = req.body.labcontent;
+			blog.labStatus = 0;
 		} 
 		if(req.body.blogOldCategory != req.body.blogCategory) {
 			blog.blogCategory = req.body.blogCategory;

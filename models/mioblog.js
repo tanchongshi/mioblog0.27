@@ -19,6 +19,7 @@ var BlogCategory = new Schema({
 
 var BlogSchema = new Schema({
     labContent: { type: String}, //实验室
+    labStatus: { type: Number},
     blogTitle: String,
     blogContent: String,
     blogContext: {
@@ -223,6 +224,7 @@ BlogDAO.prototype.findByIdAndUpdate = function(obj, callback){
                 doc.blogTitle = obj.blogTitle;
                 doc.blogContent = obj.blogContent;
                 doc.blogImage = obj.blogImage;
+                doc.labStatus = obj.labStatus;
                 if(obj.labContent == '') {
                     doc.labContent = '';
                 }else {
@@ -605,15 +607,17 @@ BlogDAO.prototype.findArticleTap = function(callback) {
  */
 BlogDAO.prototype.findLabByExist = function(option, callback) {
     var skipFrom = (option.pageNumber * option.resultsPerPage) - option.resultsPerPage; //从第几页开始查询
-    Blog.find({}).populate('blogCategory', 'id, categoryName').sort({'_id':-1}).skip(skipFrom).limit(option.resultsPerPage).exists('labContent', true).exec(function(err ,limitObj) {
+    Blog.find({'labStatus': 1}).populate('blogCategory', 'id, categoryName').sort({'_id':-1}).skip(skipFrom).limit(option.resultsPerPage).exists('labContent', true).exec(function(err ,limitObj) {
+        
         if (err) {
             return callback(err);
         };
-        Blog.find({}).exists('labContent', true).exec(function(err, allObj) { //查找出一共几页
+        Blog.find({'labStatus': 1}).exists('labContent', true).exec(function(err, allObj) { //查找出一共几页
             if (err) {
                 return callback(err);
             }
             var pageCount = Math.ceil(allObj.length / option.resultsPerPage);
+            
             callback(err, pageCount, limitObj);
         })
     })
