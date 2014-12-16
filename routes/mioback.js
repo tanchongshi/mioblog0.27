@@ -484,19 +484,49 @@ module.exports = function(app, __dirname){
 
     /** 后台首页统计访问jquery table通过ajax获得数据 **/
     app.all('/indexVistaDetail', Verify.authentication);
-    app.get('/indexVistaDetail',function(req, res){
+    app.get('/indexVistaDetail', function(req, res){
 
-        RedisDao.getVisitInfo(24 * 60 * 60 * 1000, function(err, users) {
-            if (err) {
-                return next (err);
-            }
+    	var visitType = parseInt(req.query.visitType);
+    	console.log(visitType);
+    	switch(visitType) {
+    		case 1 : getInfoFun(24 * 60 * 60 * 1000); break;//获得一天内的访问用户
+    		case 2 : getInfoFun(7 * 24 * 60 * 60 * 1000); break;//获得一周内的访问用户
+    		case 3 : getInfoFun(30 * 24 * 60 * 60 * 1000); break;//获得一月内的访问用户
+    		case 4 : getInfoFun(365 * 24 * 60 * 60 * 1000); break;//获得一年内的访问用户
+    		default: getReferFun(visitType);
+    	}
+    	
+    	function getInfoFun(time) {
+	        RedisDao.getVisitInfo(time, function(err, users) {
+	            if (err) {
+	                return next (err);
+	            }
+	    		var arr = [];
+	    		for(var i in users){
+	    			arr.push(JSON.parse(users[i]));
+	    		}
+	            res.send({"aaData":  arr});  
+
+	        });
+    	}
+
+    	function getReferFun(visitType) {
+
     		var arr = [];
-    		for(var i in users){
+    		var users;
+    		console.log(req.refererYear);
+    		switch(visitType) {
+    			case 5: users = req.refererDay; break;
+    			case 6: users = req.refererWeek; break;
+    			case 7: users = req.refererMonth; break;
+    			default: users = req.refererYear;
+    		}
+    		for(var i in users) {
     			arr.push(JSON.parse(users[i]));
     		}
-            res.send({"aaData":  arr});  
+    		res.send({'aaData': arr});
 
-        });
+    	}
 
 		/*for(var i in temVal) {
 			var index = temVal[i].lastIndexOf('mioip:');

@@ -81,7 +81,7 @@ app.use(function(req, res, next){
 
 //获得一天访问页面
 app.use(function(req, res, next){
-    if(req.path == config.bi) {
+    if(req.path == config.bi || req.path == '/indexVistaDetail') {
         RedisDao.getDayReferer(req, res, next, function(err) {
             next(err);
         });
@@ -93,7 +93,7 @@ app.use(function(req, res, next){
 
 //获得一周访问页面
 app.use(function(req, res, next){
-    if(req.path == config.bi){
+    if(req.path == config.bi || req.path == '/indexVistaDetail'){
         RedisDao.getWeekReferer(req, res, next, function(err) {
             next(err);
         });
@@ -105,7 +105,7 @@ app.use(function(req, res, next){
 
 //获得一月访问页面
 app.use(function(req, res, next){
-    if(req.path == config.bi) {
+    if(req.path == config.bi || req.path == '/indexVistaDetail') {
         RedisDao.getMonthReferer(req, res, next, function(err) {
             next(err);
         });
@@ -116,7 +116,7 @@ app.use(function(req, res, next){
 
 //获得一年访问页面
 app.use(function(req, res, next){
-    if(req.path == config.bi) {
+    if(req.path == config.bi || req.path == '/indexVistaDetail') {
         RedisDao.getYearReferer(req, res, next, function(err) {
             next(err);
         });

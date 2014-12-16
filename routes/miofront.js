@@ -219,7 +219,7 @@ module.exports = function(app){
     app.get('/lab/:num', function(req, res, next) {
 
         var pageNumber = fiterNum(req); //过滤参数
-        var resultsPerPage=req.query.limit||2; //每页数据，默认5条
+        var resultsPerPage=req.query.limit||10; //每页数据，默认5条
         var option = {
             pageNumber: pageNumber,
             resultsPerPage: resultsPerPage
