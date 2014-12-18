@@ -1,0 +1,199 @@
+body.on.blog{
+    display: block;
+}
+
+#loading {
+    margin: 80px auto;
+    width: 128px;
+    font-weight: bold;
+}
+
+#loading div.center {
+    margin-top: 10px;
+    height: 15px;
+    width: 128px;
+    background: url(../images/ajax-loader.gif);
+}
+
+#shangxia {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-left: -520px;
+    display: block;
+}
+
+#shang {
+    background: url(../images/mioscroll.gif) no-repeat;
+    position: relative;
+    cursor: pointer;
+    height: 57px;
+    width: 32px;
+    margin: 10px 0;
+}
+
+#comt {
+
+}
+
+#xia {
+    background: url(../images/mioscroll.gif) no-repeat center -93px;
+    position: relative;
+    cursor: pointer;
+    height: 57px;
+    width: 32px;
+    margin: 10px 0;
+}
+
+
+
+#timeline {
+     min-height: 600px;
+}
+
+
+#nav-primary .mio-nav ul li {
+    margin-left:10px;
+    float: left;
+    padding: 0;
+    margin-left: 3px;
+    line-height: 1.3em;
+    display: block;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+#nav-primary .mio-nav ul li a {
+    height: 32px;
+    line-height: 32px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    font-weight: bold;
+    color:rgba(235, 90, 61, 0.54);
+}
+#nav-primary .mio-nav ul li a.active{
+    color:#dd5136;
+}
+
+#nav-primary .mio-nav ul li a:hover {
+    color:#dd5136;
+    height: 32px;
+    line-height: 32px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    font-weight: bold;
+
+}
+
+#footer-widgets{
+    display: none;
+}
+
+#footer-widgets.on{
+    display: block;
+}
+
+        a, a:visited, a:hover,
+        .comment-action i {
+            color: #dd5136;
+        }
+
+        input[type='submit'],
+        input[type='button'],
+        .paging-navigation li a:hover,
+        .hentry .entry-header:after,
+        .hentry .entry-footer:before,       
+        .hentry .entry-link,
+        .hentry .entry-status,
+        #site-header #logo,
+        .hentry .entry-date,
+        .paging-navigation:after,
+        #timeline > li .hentry:before {
+            background: #4589C9;
+        }
+		
+/*         .hentry .hentry-box > .entry-quote1 {
+            background: #4589C9;
+        }
+        .hentry .hentry-box > .entry-quote2 {
+            background: #3BBB6E;
+        }    
+        
+        .hentry .hentry-box > .entry-quote3 {
+            background: #A77325;
+        } */		
+
+        .entry-content a:hover,
+        .entry-content blockquote,
+        p.pullquote-left,
+        p.pullquote-right,
+        #social-icons li a:hover,
+        #nav-primary > ul > li:hover > a {
+            border-color: #dd5136;
+        }
+
+        #social-icons li a:hover,
+        #nav-primary > ul > li:hover > a,
+        #nav-primary ul ul li a:hover {
+            color: #dd5136;
+        }
+
+        .hentry .entry-thumb-caption, .gallery .gallery-item-caption {
+            background: #dd5136;
+            background: rgba(221, 81, 54, 0.8);
+        }
+
+        #site-header #logo {
+            background-image: url(../images/_Vincent_Mo_Latte.jpg);
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: cover;            
+        }
+		 
+/*     .entry-date,#footer-bottom {
+    -webkit-animation-name: appLoadingIndicator;
+    -webkit-animation-duration: 10.5s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: linear;
+}        
+         
+@-webkit-keyframes appLoadingIndicator{
+    0% {
+        background: #fff;
+    }
+    40% {
+        background: #fff;
+    }
+    70% {
+        background: #fff;
+    } 
+    100% {
+        background: #fff;
+    }                      
+}  */
+
+    #mioImageMe, #nav-primary .mio-nav #nav-blog.mio-nav-blog {
+        display: none;
+    }
+    #mioImageMe.on, #nav-primary .mio-nav #nav-blog.mio-nav-blog.active {
+        display: block;
+    }
+
+    #summary ul li {
+        font-size: 0.7em;
+    }
+
+    .am-container{
+        height: 100%;
+    }
+
+    #aboutme.blog {
+        height: 100%;
+    }
+
+    .header-nav-title{
+        margin 0 auto; text-align:  center
+    }
