@@ -76,7 +76,7 @@
                     <li class="nav-previous"><a href="/index/<%= parseInt(option.pageNumber)-1 %>" id="mioprevious"
                                                 onclick="return false;"><i class="icon-chevron-left"></i></a></li>
                     <% }
-                    if(option.totalPage != option.pageNumber) {
+                    if(option.totalPage != option.pageNumber && option.totalPage > 1) {
                     %>
                     <li class="nav-next"><a href="/index/<%= parseInt(option.pageNumber)+1 %>" id="mionext"
                                             onclick="return false;"><i class="icon-chevron-right"></i></a></li>

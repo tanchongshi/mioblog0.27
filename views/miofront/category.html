@@ -94,7 +94,7 @@
                             id="mioprevious"
                             onclick="return false;"><i class="icon-chevron-left"></i></a></li>
                     <% }
-                    if(option.totalPage != option.pageNumber) {
+                    if(option.totalPage != option.pageNumber && option.totalPage > 1) {
                     %>
                     <li class="nav-next"><a
                             href="/categoryblog/<%= parseInt(option.pageNumber)+1 %>/<%= option.idObj._id %>"
