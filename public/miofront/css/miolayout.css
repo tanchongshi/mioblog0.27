@@ -71,14 +71,14 @@ body.on.blog{
     float: left;
     margin-right: 10px;
     font-weight: bold;
-    color:rgba(235, 90, 61, 0.54);
+    color:rgba(253, 174, 2, 0.62);
 }
 #nav-primary .mio-nav ul li a.active{
-    color:#dd5136;
+    color:#FDAE02;
 }
 
-#nav-primary .mio-nav ul li a:hover {
-    color:#dd5136;
+#nav-primary .mio-nav ul li a:hover, #nav-primary .mio-nav ul li a:active {
+    color:#FDAE02;
     height: 32px;
     line-height: 32px;
     display: block;
@@ -114,7 +114,7 @@ body.on.blog{
         #timeline > li .hentry:before {
             background: #4589C9;
         }
-		
+        
 /*         .hentry .hentry-box > .entry-quote1 {
             background: #4589C9;
         }
@@ -124,7 +124,7 @@ body.on.blog{
         
         .hentry .hentry-box > .entry-quote3 {
             background: #A77325;
-        } */		
+        } */        
 
         .entry-content a:hover,
         .entry-content blockquote,
@@ -147,12 +147,12 @@ body.on.blog{
         }
 
         #site-header #logo {
-            background-image: url(../images/_Vincent_Mo_Latte.jpg);
+            background-image: url(../images/default_cover_4_0d4d8376ed208af1df44d5624273dcf8.jpg);
             background-position: center bottom;
             background-repeat: no-repeat;
-            background-size: cover;            
+            background-size: 100% 100%;            
         }
-		 
+         
 /*     .entry-date,#footer-bottom {
     -webkit-animation-name: appLoadingIndicator;
     -webkit-animation-duration: 10.5s;
@@ -195,5 +195,5 @@ body.on.blog{
     }
 
     .header-nav-title{
-        margin 0 auto; text-align:  center
+        margin 0 auto; text-align:  center;font-size: 30px;font-weight: bold;color: rgb(71, 135, 253);
     }
